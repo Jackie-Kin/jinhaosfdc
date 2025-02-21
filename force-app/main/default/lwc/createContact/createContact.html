@@ -1,0 +1,15 @@
+<template>
+    <lightning-modal-header label="Create Contact"></lightning-modal-header>
+    <lightning-modal-body>
+        <div class="row">
+            <lightning-input name="FirstName" label="FirstName" placeholder="type firtnmae here..."  onchange={handleFirstNameChange}></lightning-input>
+            <lightning-input name="LastName" label="LastName" placeholder="type lastname here..." onchange={handleLastNameChange}></lightning-input>
+            <lightning-input name="Phone" label="Phone" placeholder="type phone here..." onchange={handlePhoneChange}></lightning-input>
+            <lightning-input name="Email" label="Email" placeholder="type email here..." onchange={handleEmailChange}></lightning-input>
+        </div>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+        <lightning-button variant="brand" label="Confirm" class="slds-var-m-left_x-small" onclick={handleConfirm}></lightning-button>
+        <lightning-button variant="neutral" label="Cancel" class="slds-var-m-left_x-small" onclick={handleClose}></lightning-button>
+    </lightning-modal-footer>
+</template>

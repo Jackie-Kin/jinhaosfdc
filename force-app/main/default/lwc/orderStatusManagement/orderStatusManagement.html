@@ -1,0 +1,101 @@
+<template>
+    <!-- header -->
+    <lightning-modal-header label={label.title}></lightning-modal-header>
+    <!-- body -->
+    <lightning-modal-body>
+        <!-- loading spinner -->
+        <div class="spinner-bg" if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+        </div>
+        <div>
+            <template if:false={isEmpty}>
+            <!-- tabs with data table -->
+            <lightning-tabset active-tab-value={activeTab}>
+                <!-- tab for available reords -->
+                <lightning-tab label={label.availableLines} value={availableLinesTab} onactive={handleTabActive}>
+                    <template if:false={isALEmpty}>
+                        <div class="data-container">
+                            <!-- data table -->
+                            <lightning-datatable
+                                data-id="dtAL"
+                                key-field="id"
+                                data={availableOiwList}
+                                columns={columns}
+                                onrowselection={handleALRowSelection}>
+                            </lightning-datatable>
+                        </div>
+                    </template>
+                    <template if:true={isALEmpty}>
+                        <div class="data-container">
+                            <div class="slds-illustration slds-illustration_small slds-var-p-around_large" aria-hidden="true">
+                                <img src="/img/chatter/OpenRoad.svg" class="slds-illustration__svg" alt=""/>
+                                <div class="slds-text-color_weak">
+                                    <h3 class="slds-text-heading_medium">{label.noRecord}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </lightning-tab>
+                <lightning-tab label={label.rejectedLines} value={rejectedLinesTab} onactive={handleTabActive}>
+                    <template if:false={isCLEmpty}>
+                        <div class="data-container">
+                            <lightning-datatable
+                                data-id="dtCL"
+                                key-field="id"
+                                data={rejectedOiwList}
+                                columns={columns}
+                                onrowselection={handleCLRowSelection}>
+                            </lightning-datatable>
+                        </div>
+                    </template>
+                    <template if:true={isCLEmpty}>
+                        <div class="data-container">
+                            <div class="slds-illustration slds-illustration_small slds-var-p-around_large" aria-hidden="true">
+                                <img src="/img/chatter/OpenRoad.svg" class="slds-illustration__svg" alt=""/>
+                                <div class="slds-text-color_weak">
+                                    <h3 class="slds-text-heading_medium">{label.noRecord}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </lightning-tab>
+            </lightning-tabset>
+            </template>
+            <template if:true={isEmpty}>
+                <div class="slds-illustration slds-illustration_small slds-var-p-around_large" aria-hidden="true">
+                    <img src="/img/chatter/Desert.svg" class="slds-illustration__svg" alt=""/>
+                    <div class="slds-text-color_weak">
+                        <h3 class="slds-text-heading_medium">{label.noRecord}</h3>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </lightning-modal-body>
+    <!-- footer -->
+    <lightning-modal-footer>
+        <template if:true={isALActived}>
+            <template if:false={isALEmpty}>
+                <lightning-button variant="brand" label={label.rejectProducts} class="slds-var-m-left_x-small" onclick={handleALSubmit}></lightning-button>
+            </template>
+        </template>
+        <template if:false={isALActived}>
+            <template if:false={isCLEmpty}>
+                <lightning-button variant="brand" label={label.reactiveProducts} class="slds-var-m-left_x-small" onclick={handleCLSubmit}></lightning-button>
+            </template>
+        </template>
+        <lightning-button variant="neutral" label={label.close} class="slds-var-m-left_x-small" onclick={closeAction}></lightning-button>
+    </lightning-modal-footer>
+
+    <template if:true={isShowReasonPicker} >
+        <div class="modal-glass slds-backdrop fadein slds-backdrop_open reason-picker-bg"></div>
+        <div class="panel slds-modal slds-fade-in-open">
+            <div class="modal-container slds-modal__container">
+                <c-order-reason-picker
+                default-val={defaultRRVal} 
+                options={rejectReasonOpts} 
+                onreasonselected={handleReasonSelected}
+                onclose={handleReasonClose}></c-order-reason-picker>
+            </div>
+        </div>
+    </template>
+</template>

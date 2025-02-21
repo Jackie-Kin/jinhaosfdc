@@ -1,0 +1,22 @@
+<template>
+    <!-- header -->
+    <lightning-modal-header label={label.title}></lightning-modal-header>
+    <!-- body -->
+    <lightning-modal-body>
+        <div class="slds-var-m-around_large picker-container">
+            <lightning-combobox
+                data-name={label.rejectionReasonComb}
+                label={label.rejectionReasonLabel}
+                value={defaultVal}
+                placeholder={label.placeholder}
+                options={options}
+                required>
+            </lightning-combobox>
+        </div>
+    </lightning-modal-body>
+    <!-- footer -->
+    <lightning-modal-footer>
+        <lightning-button variant="brand" label={label.confirmBtn} class="slds-var-m-left_x-small" onclick={confirmReason}></lightning-button>
+        <lightning-button variant="neutral" label={label.cancelBtn} class="slds-var-m-left_x-small" onclick={closeAction}></lightning-button>
+    </lightning-modal-footer>
+</template>

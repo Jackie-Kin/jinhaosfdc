@@ -1,0 +1,19 @@
+<template>
+    <!-- header -->
+    <lightning-modal-header label={label.title} class="my-modal-header">
+    </lightning-modal-header>
+
+    <lightning-modal-body>
+        <p>Account Detail: has {totalContacts} Related contacts</p>
+        <div class="slds-m-around_medium">
+            <p>Account Name: {name}</p>
+            <p>Phone: {phone}</p>
+            <p>Email: {email}</p>
+        </div>
+    </lightning-modal-body>
+    <lightning-modal-body>
+        <div>
+            <c-related-contacts account-id={accountId} ontotalcontacts={showTotalContacts} ></c-related-contacts>
+        </div>
+    </lightning-modal-body>
+</template>

@@ -1,0 +1,16 @@
+<template>
+	<lightning-card icon-name="custom:custom20" title="HelloWorld">
+		<div class="slds-m-around_medium">
+			<p>Hello, <span class="red-text">{greeting}!</span></p>
+			<lightning-input type="text" label="Please input the text:" value={greeting} onchange={changeHandler}></lightning-input>
+		</div>
+		<div>
+			<lightning-button variant="brand" label="Change greetingObjName Label" title="titleName"
+				onclick={handleClick}></lightning-button>
+			<p>greetingObj.name:{greetingObj.name}</p>
+		</div>
+		<div>
+            <p>public attribute set from app builder {myAPIProperty}</p>
+        </div>
+	</lightning-card>
+</template>

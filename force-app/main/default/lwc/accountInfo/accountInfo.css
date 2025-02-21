@@ -1,0 +1,8 @@
+.dummy{
+	color : black;
+}
+.my-modal-header {
+    /* --slds-c-modal-header-color-background: LightYellow; */
+	background:rgb(243, 243, 243);
+	font-weight: bold
+}

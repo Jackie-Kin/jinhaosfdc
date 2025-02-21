@@ -1,0 +1,27 @@
+<template>
+    <p>Related Contacts: </p>
+    <lightning-modal-body>
+        <!-- <input type="text" placeholder="New Contact Name" value={newContactName} oninput={handleNameChange} /> -->
+        <!-- <button onclick={handleCreateContact}>Create</button> -->
+        <lightning-button label="Create" title="Create Contact" onclick={handleCreateContact}
+            class="slds-m-left_x-small"></lightning-button>
+        <template if:false={isContactEmpty}>
+            <div class="data-container">
+                <!-- data table -->
+                <lightning-datatable data-id="dtContact" key-field="id" data={contactList} columns={columns}>
+                </lightning-datatable>
+            </div>
+        </template>
+    </lightning-modal-body>
+    <template if:true={isShowContactCreate}>
+        <div class="modal-glass slds-backdrop fadein slds-backdrop_open reason-picker-bg"></div>
+        <div class="panel slds-modal slds-fade-in-open">
+            <div class="modal-container slds-modal__container">
+                <div class="modal-container slds-modal__container">
+                    <c-create-contact account-id={accountId} oncontactcreated={handleContactCreated}
+                        onclose={handleClose}></c-create-contact>
+                </div>
+            </div>
+        </div>
+    </template>
+</template>

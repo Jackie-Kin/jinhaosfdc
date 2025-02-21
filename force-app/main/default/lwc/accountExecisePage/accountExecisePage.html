@@ -1,0 +1,15 @@
+<template>
+	<!-- header -->
+	<lightning-modal-header label={label.title}></lightning-modal-header>
+	<lightning-modal-body>
+		<div class="data-container">
+			<!-- data table -->
+			<lightning-datatable data-id="dtAL" key-field="Id" data={recentAccountList} columns={columns}
+				onrowselection={handleALRowSelection}>
+			</lightning-datatable>
+		</div>
+	</lightning-modal-body>
+	<lightning-modal-footer>
+		<span>This is the footer</span>
+	</lightning-modal-footer>
+</template>

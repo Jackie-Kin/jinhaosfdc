@@ -1,0 +1,7 @@
+.data-container {
+    height: 18rem;
+    overflow-y: scroll;
+}
+.reason-picker-bg {
+    opacity: 0.5;
+}
