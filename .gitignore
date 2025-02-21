@@ -3,13 +3,13 @@
 # For useful gitignore templates see: https://github.com/github/gitignore
 
 # Salesforce cache
-# .sf/
-# .sfdx/
+.sf/
+.sfdx/
 .localdevserver/
 deploy-options.json
 
 # LWC VSCode autocomplete
-# **/lwc/jsconfig.json
+**/lwc/jsconfig.json
 
 # LWC Jest coverage reports
 coverage/
