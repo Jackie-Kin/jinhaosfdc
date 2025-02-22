@@ -36,7 +36,7 @@ jobs:
           echo "[INFO] Diff generated"
 
       - name: 'Deploy to environment with running all local tests'
-        run: |
+        run: |  
           echo ${{ secrets.JWT_SERVER_KEY }} | base64 --decode > server.key
           sf org login jwt --username ${{ secrets.DEPLOYMENT_USER_NAME }} \
             --jwt-key-file server.key \
