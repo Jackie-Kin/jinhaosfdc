@@ -52,7 +52,4 @@ jobs:
             --alias deployment-org
         shell: bash
 
-      - name: Deploy to Salesforce
-        run: |
-          sf project deploy start --source-dir force-app --target-org deployment-org --test-level RunLocalTests --wait 10
-        shell: bash
+
