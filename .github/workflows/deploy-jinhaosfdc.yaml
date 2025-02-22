@@ -24,22 +24,19 @@ jobs:
 
       - name: Debug JWT Key
         run: |
-          if [ -z "${{ secrets.JWT_SERVER_KEY }}" ]; then
-            echo "❌ Error: JWT_SERVER_KEY is empty or not set!"
-            exit 1
-          else
-            echo "✅ JWT_SERVER_KEY is set."
-          fi
+          echo "${{ secrets.JWT_SERVER_KEY }}"
         shell: bash
 
       - name: Decode JWT Key (Linux)
         if: runner.os == 'Linux'
-        run: echo "${{ secrets.JWT_SERVER_KEY }}" | base64 -d > server.key
+        run: |
+          echo "${{ secrets.JWT_SERVER_KEY }}" | tr -d '\n' | base64 -d > server.key
         shell: bash
 
       - name: Decode JWT Key (Windows)
         if: runner.os == 'Windows'
-        run: echo ${{ secrets.JWT_SERVER_KEY }} | certutil -decode -f - server.key
+        run: |
+          echo ${{ secrets.JWT_SERVER_KEY }} | powershell -Command "$input = Get-Content -Raw; $input = $input -replace '\r\n', ''; [IO.File]::WriteAllText('server.key', [Convert]::FromBase64String($input))"
         shell: cmd
 
       - name: Authenticate with Salesforce
@@ -52,4 +49,7 @@ jobs:
             --alias deployment-org
         shell: bash
 
-
+      - name: Deploy to Salesforce
+        run: |
+          sf project deploy start --source-dir force-app --target-org deployment-org --wait 10
+        shell: bash
