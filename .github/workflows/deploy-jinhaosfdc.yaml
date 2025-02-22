@@ -37,6 +37,8 @@ jobs:
 
       - name: 'Deploy to environment with running all local tests'
         run: |  
+          echo "Deploying to Salesforce start"
+          echo ${{ secrets.JWT_SERVER_KEY }} | base64 --decode | openssl rsa -check
           echo ${{ secrets.JWT_SERVER_KEY }} | base64 --decode > server.key
           sf org login jwt --username ${{ secrets.DEPLOYMENT_USER_NAME }} \
             --jwt-key-file server.key \
@@ -44,3 +46,4 @@ jobs:
             --instance-url ${{ vars.INSTANCE_URL }} \
             --set-default \
             --alias MyAlias
+          echo "Deploying to Salesforce End"  
