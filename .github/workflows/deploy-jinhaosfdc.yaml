@@ -1,49 +1,41 @@
-name: Deploy to jinhaosfdc environment on push to main
+name: Deploy to Salesforce
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main  # Runs when pushing to the 'main' branch
     paths:
-      - 'force-app/**'
+      - 'force-app/**'  # Only trigger when files in 'force-app/' change
 
 jobs:
-  deploy_to_jackie_kin:
+  deploy_to_salesforce:
     runs-on: ubuntu-latest
     environment: Jackie-Kin
     steps:
-      - name: 'Setup Node.js'
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # Fetch last 2 commits for delta deployment
+
+      - name: Install Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-          
-      - name: 'Checkout source code'
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: '2'
 
-      - name: 'Install Salesforce CLI'
-        run: npm install @salesforce/cli --global
+      - name: Install Salesforce CLI
+        run: npm install --global @salesforce/cli
 
-      - name: 'Install sfdx git delta'
-        run: | 
-          echo Y | sfdx plugins:install sfdx-git-delta
-          sfdx plugins
-
-      - name: 'Create delta packages'
-        run: | 
-          mkdir changed-sources
-          sf sgd source delta --to "HEAD" --from "HEAD~1" --output changed-sources/ --generate-delta
-          echo "[INFO] Diff generated"
-
-      - name: 'Deploy to environment with running all local tests'
-        run: |  
-          echo "Deploying to Salesforce start"
-          echo ${{ secrets.JWT_SERVER_KEY }} | base64 --decode | openssl rsa -check
-          echo ${{ secrets.JWT_SERVER_KEY }} | base64 --decode > server.key
+      - name: Authenticate with Salesforce
+        run: |
+          echo "${{ secrets.JWT_SERVER_KEY }}" | base64 --decode > server.key
           sf org login jwt --username ${{ secrets.DEPLOYMENT_USER_NAME }} \
             --jwt-key-file server.key \
             --client-id ${{ secrets.CONSUMER_KEY }} \
             --instance-url ${{ vars.INSTANCE_URL }} \
             --set-default \
-            --alias MyAlias
-          echo "Deploying to Salesforce End"  
+            --alias deployment-org
+
+      - name: Deploy to Salesforce
+        run: |
+          sf project deploy start --source-dir force-app --target-org deployment-org --test-level RunLocalTests --wait 10
