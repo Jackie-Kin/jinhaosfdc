@@ -9,7 +9,7 @@ on:
 
 jobs:
   deploy_to_salesforce:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Change to windows-latest if needed
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
