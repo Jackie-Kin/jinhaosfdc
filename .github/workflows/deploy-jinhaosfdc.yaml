@@ -28,7 +28,7 @@ jobs:
 
       - name: Authenticate with Salesforce
         run: |
-          echo ${{ secrets.JWT_SERVER_KEY }} | base64 --decode > server.key
+          echo "${{ secrets.JWT_SERVER_KEY }}" | base64 -d > server.key
           sf org login jwt --username ${{ secrets.DEPLOYMENT_USER_NAME }} \
             --jwt-key-file server.key \
             --client-id ${{ secrets.CONSUMER_KEY }} \
