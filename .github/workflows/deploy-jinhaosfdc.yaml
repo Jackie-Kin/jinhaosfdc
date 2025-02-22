@@ -25,10 +25,10 @@ jobs:
       - name: Debug JWT Key
         run: |
           if [ -z "${{ secrets.JWT_SERVER_KEY }}" ]; then
-            echo "Error: JWT_SERVER_KEY is empty or not set!"
+            echo "❌ Error: JWT_SERVER_KEY is empty or not set!"
             exit 1
           else
-            echo "JWT_SERVER_KEY is set."
+            echo "✅ JWT_SERVER_KEY is set."
           fi
         shell: bash
 
