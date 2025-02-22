@@ -3,20 +3,16 @@ name: Deploy to Salesforce
 on:
   push:
     branches:
-      - main  # Runs when pushing to the 'main' branch
+      - main
     paths:
-      - 'force-app/**'  # Only trigger when files in 'force-app/' change
+      - 'force-app/**'
 
 jobs:
   deploy_to_salesforce:
     runs-on: ubuntu-latest
-    environment: Jackie-Kin
     steps:
-
       - name: Checkout Repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 2  # Fetch last 2 commits for delta deployment
 
       - name: Install Node.js
         uses: actions/setup-node@v3
@@ -26,13 +22,25 @@ jobs:
       - name: Install Salesforce CLI
         run: npm install --global @salesforce/cli
 
+      - name: Debug JWT Key
+        run: |
+          if [[ -z "${{ secrets.JWT_SERVER_KEY }}" ]]; then
+            echo "Error: JWT_SERVER_KEY is empty or not set!"
+            exit 1
+          else
+            echo "JWT_SERVER_KEY is set."
+          fi
+
+      - name: Decode JWT Key
+        run: |
+          echo "${{ secrets.JWT_SERVER_KEY }}" | base64 -d > server.key
+
       - name: Authenticate with Salesforce
         run: |
-          echo ${{ secrets.JWT_SERVER_KEY }} | certutil -decode -f - server.key
-          sf org login jwt --username ${{ secrets.DEPLOYMENT_USER_NAME }} \
+          sf org login jwt --username ${{ secrets.SF_USERNAME }} \
             --jwt-key-file server.key \
-            --client-id ${{ secrets.CONSUMER_KEY }} \
-            --instance-url ${{ vars.INSTANCE_URL }} \
+            --client-id ${{ secrets.SF_CONSUMER_KEY }} \
+            --instance-url ${{ vars.SF_INSTANCE_URL }} \
             --set-default \
             --alias deployment-org
 
