@@ -33,7 +33,11 @@ jobs:
 
       - name: Decode JWT Key
         run: |
-          echo "${{ secrets.JWT_SERVER_KEY }}" | base64 -d > server.key
+          if [[ "$RUNNER_OS" == "Linux" ]]; then
+            echo "${{ secrets.JWT_SERVER_KEY }}" | base64 -d > server.key
+          elif [[ "$RUNNER_OS" == "Windows" ]]; then
+            echo ${{ secrets.JWT_SERVER_KEY }} | certutil -decode -f - server.key
+          fi
 
       - name: Authenticate with Salesforce
         run: |
